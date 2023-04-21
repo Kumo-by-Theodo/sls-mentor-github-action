@@ -1,0 +1,16 @@
+name: 'Run sls-mentor'
+
+description: 'Run sls-mentor'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::645547230688:role/github-actions
+        aws-region: eu-west-1
+
+    - name: Run sls-mentor
+      run: pnpm sls-mentor
+      shell: bash

@@ -1,6 +1,31 @@
 name: Guardian
-description: Linting AWS Infrastructure for perfermance, security and sustainability optimization.
+description: Linting AWS Infrastructure for performance, security and sustainability optimization.
 author: Frédéric Barthelet
+inputs:
+  # Remember we used ain input which was not defined in the
+  # workflow file? It's because the default is already
+  # fine for us, so no need to change it.
+  # As described above, the github token is a token to
+  # interact with the GitHub REST API and is created for
+  # you from GitHub automatically.
+  repo-token:
+    description: GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'
+  on: deployment 
+runs:
+  using: 'composite'
+  steps:
+    - name: Configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::645547230688:role/github-actions
+        aws-region: eu-west-1
+
+    - name: Run sls-mentor
+      run: src/entrypoint.sh
+      shell: bash
+      args:
+      - "${{ inputs.repo-token }}"
