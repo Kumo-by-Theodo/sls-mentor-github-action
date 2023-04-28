@@ -1,5 +1,5 @@
 import {IncomingMessage} from 'http'
-import https from 'https'
+import * as https from 'https'
 
 type RequestOptions = {
   method: string
@@ -16,6 +16,8 @@ export const request = async (
   options: RequestOptions
 ): Promise<RequestOutput> => {
   return new Promise((resolve, reject) => {
+    console.log('url', url)
+    console.log('options', options)
     const req = https
       .request(url, options, res => {
         let data = ''

@@ -12,18 +12,8 @@ inputs:
     description: GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
     required: true
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
-  on: deployment 
-runs:
   using: 'composite'
   steps:
-    - name: Configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::645547230688:role/github-actions
-        aws-region: eu-west-1
-
     - name: Run sls-mentor
       run: src/entrypoint.sh
       shell: bash

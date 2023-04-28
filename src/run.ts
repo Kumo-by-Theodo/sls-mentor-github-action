@@ -8,11 +8,12 @@ let {after: sha} = event
 if (!sha) {
   sha = GITHUB_SHA
 }
+console.log('event', event);
 const {repository} = event
 const {
-  owner: {login: owner}
+  owner,
+  name
 } = repository
-const {name: repo} = repository
 
 const checkName = 'Sls-mentor check'
 
@@ -32,7 +33,7 @@ async function createCheck(): Promise<string> {
   }
 
   const {data} = await request(
-    `https://api.github.com/repos/${owner}/${repo}/check-runs`,
+    `https://api.github.com/repos/${owner}/${name}/check-runs`,
     {
       method: 'POST',
       headers,
