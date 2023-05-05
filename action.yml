@@ -1,11 +1,21 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: Guardian
+description: Linting AWS Infrastructure for performance, security and sustainability optimization.
+author: Frédéric Barthelet
 inputs:
-  milliseconds: # change this
+  # Remember we used ain input which was not defined in the
+  # workflow file? It's because the default is already
+  # fine for us, so no need to change it.
+  # As described above, the github token is a token to
+  # interact with the GitHub REST API and is created for
+  # you from GitHub automatically.
+  repo-token:
+    description: GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: Run sls-mentor
+      run: src/entrypoint.sh
+      shell: bash
+      args:
+      - "${{ inputs.repo-token }}"
