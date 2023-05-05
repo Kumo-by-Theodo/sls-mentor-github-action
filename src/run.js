@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.slsMentor = void 0;
 /* eslint-disable no-console */
 var exec_1 = require("@actions/exec");
 var request_1 = require("./request");
@@ -94,6 +95,7 @@ function slsMentor() {
         });
     });
 }
+exports.slsMentor = slsMentor;
 function run() {
     return __awaiter(this, void 0, void 0, function () {
         var id;

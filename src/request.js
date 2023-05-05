@@ -50,9 +50,9 @@ var request = function (url, options) { return __awaiter(void 0, void 0, void 0,
                         data += chunk;
                     });
                     res.on('end', function () {
-                        var _a;
-                        if ((_a = res.statusCode) !== null && _a !== void 0 ? _a : 0 >= 400) {
-                            var err = new Error("Received status code ".concat(res.statusCode));
+                        if (res.statusCode === undefined || res.statusCode >= 400) {
+                            console.log(res);
+                            var err = new Error("Received status code ".concat(url));
                             reject(err);
                         }
                         else {

@@ -16,8 +16,6 @@ export const request = async (
   options: RequestOptions
 ): Promise<RequestOutput> => {
   return new Promise((resolve, reject) => {
-    console.log('url', url)
-    console.log('options', options)
     const req = https
       .request(url, options, res => {
         let data = ''
@@ -25,8 +23,8 @@ export const request = async (
           data += chunk
         })
         res.on('end', () => {
-          if (res.statusCode ?? 0 >= 400) {
-            const err = new Error(`Received status code ${res.statusCode}`)
+          if (res.statusCode === undefined || res.statusCode >= 400) {
+            const err = new Error(`Received status code ${url}`)
             reject(err)
           } else {
             resolve({res, data: JSON.parse(data)})

@@ -1,19 +1,18 @@
-/* eslint-disable no-console */
 import {exec} from '@actions/exec'
 import {request} from './request'
+import fs from 'fs'
 
 const {GITHUB_EVENT_PATH, GITHUB_SHA, GITHUB_TOKEN} = process.env
-const event = require(GITHUB_EVENT_PATH ?? '')
+const event = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH ?? '', 'utf8'))
+
+//console.log('GITHUB_EVENT_PATH', GITHUB_EVENT_PATH)
+
 let {after: sha} = event
 if (!sha) {
   sha = GITHUB_SHA
 }
-console.log('event', event);
 const {repository} = event
-const {
-  owner,
-  name
-} = repository
+const {owner, name} = repository
 
 const checkName = 'Sls-mentor check'
 
@@ -43,17 +42,17 @@ async function createCheck(): Promise<string> {
   const {id} = data
   return id
 }
-async function slsMentor(): Promise<void> {
+export async function slsMentor(): Promise<void> {
   const exitCode = await exec('npm run sls-mentor')
   console.log('exit code of action run', exitCode)
 }
 
 async function run(): Promise<void> {
-  const id = createCheck()
+  createCheck()
   try {
     slsMentor()
   } catch (err) {
-    console.log(err)
+    //console.log(err)
     process.exit(1)
   }
 }
